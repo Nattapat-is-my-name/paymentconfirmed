@@ -2,25 +2,15 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, World!")
-}
-func handler2(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "test!")
-}
-
-func init() {
-	fmt.Println("Initializing...")
-}
-
-func main() {
-	http.HandleFunc("/", handler)
-	http.HandleFunc("/test", handler2)
-
-	fmt.Println("Starting server on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+// Exported function to handle requests
+func Handler(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+	for key, values := range query {
+		for _, value := range values {
+			fmt.Fprintf(w, "%s: %s\n", key, value)
+		}
+	}
 }
